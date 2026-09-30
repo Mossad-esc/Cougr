@@ -1,7 +1,9 @@
 use cougr_core::accounts::{
     AccountError, AccountKernel, GameAction, SessionBuilder, SessionKey, SessionScope,
 };
-use soroban_sdk::{symbol_short, testutils::Address as _, Address, Bytes, BytesN, Env, Symbol};
+#[cfg(any(test, feature = "testutils"))]
+use soroban_sdk::testutils::Address as _;
+use soroban_sdk::{symbol_short, Address, Bytes, BytesN, Env, Symbol};
 
 /// The only action this sample piece authorizes by default.
 pub fn sample_action_name() -> Symbol {
