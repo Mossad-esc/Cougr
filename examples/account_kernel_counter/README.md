@@ -5,8 +5,7 @@ module that is usable in a real Soroban game, not just importable.
 
 The game is a simple per-owner counter.  Every increment must be authorized
 through the `account_kernel` module that was scaffolded by
-`cougr add account-kernel` — the module is the **unmodified piece output** and
-is not hand-patched.
+`cougr add account-kernel`.
 
 ---
 
@@ -26,18 +25,13 @@ cargo test
 stellar contract build
 ```
 
-`src/account_kernel.rs` is the verbatim file written by step 2.  Nothing in
-that file was changed after scaffolding.
-
-> **Finding during scaffolding:** `cougr add account-kernel` writes two
-> top-level imports that are only exercised inside the piece's own
-> `#[cfg(test)]` block (`SessionKey` and `testutils::Address as _`).  This
-> causes `cargo clippy -- -D warnings` to fail when the piece is included in a
-> crate that enables `-D warnings`.  A `#[allow(unused_imports)]` attribute on
-> the `pub mod account_kernel;` declaration in `lib.rs` works around the issue
-> while keeping the piece file unmodified.  The fix belongs in the piece itself
-> (moving those imports inside `#[cfg(test)]`); it is tracked separately from
-> this example.
+`src/account_kernel.rs` has one change from the file written by step 2: the
+`testutils::Address as _` import is gated with `#[cfg(test)]` instead of
+`#[cfg(any(test, feature = "testutils"))]`.  The `testutils` feature is not
+declared by this crate, so the original attribute causes Clippy to emit an
+`unexpected_cfgs` error under `-D warnings`.  Moving the import under
+`#[cfg(test)]` is the correct fix; everything else in the file is verbatim
+piece output.
 
 ---
 

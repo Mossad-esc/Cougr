@@ -5,8 +5,7 @@
 //!
 //! A single-cell counter that can only be incremented by a holder of a valid
 //! session key.  All authorization flows through the `account_kernel` module
-//! that was scaffolded by `cougr add account-kernel` — the module is the
-//! **unmodified piece output** and is not hand-patched.
+//! that was scaffolded by `cougr add account-kernel`.
 //!
 //! ## Public API
 //!
@@ -32,16 +31,6 @@
 
 #![no_std]
 
-// NOTE: the account_kernel module is the unmodified output of `cougr add
-// account-kernel`.  The piece carries two top-level imports that are only
-// exercised inside its own `#[cfg(test)]` block:
-//   - `SessionKey` (used only in the test helper `make_session_key`)
-//   - `testutils::Address as _` (used only for `Address::generate` in tests)
-//
-// This is a real finding: the piece fails `cargo clippy -- -D warnings` unless
-// these imports are moved inside the `#[cfg(test)]` block.  Tracked for a
-// follow-up fix in the piece itself; see issue #375 notes.
-#[allow(unused_imports)]
 pub mod account_kernel;
 
 use cougr_core::accounts::{AccountKernel, SessionStorage};
