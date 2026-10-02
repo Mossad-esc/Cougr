@@ -1,6 +1,8 @@
 use cougr_core::accounts::{
-    AccountError, AccountKernel, GameAction, SessionBuilder, SessionKey, SessionScope,
+    AccountError, AccountKernel, GameAction, SessionBuilder, SessionScope,
 };
+#[cfg(test)]
+use cougr_core::accounts::SessionKey;
 #[cfg(test)]
 use soroban_sdk::testutils::Address as _;
 use soroban_sdk::{symbol_short, Address, Bytes, BytesN, Env, Symbol};
